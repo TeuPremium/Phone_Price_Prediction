@@ -104,7 +104,7 @@ def main():
     optimizer = Optimizer_SGD(learning_rate=0.05)  # Adjust the learning rate as needed
 
     # setting hyperparameters
-    num_epochs = 10000
+    num_epochs = 5000
 
     # Training loop
     for epoch in range(num_epochs):
@@ -138,6 +138,13 @@ def main():
         # Print training progress
         if (epoch + 1) % 100 == 0:
             print(f"Epoch {epoch+1}/{num_epochs}, Loss: {loss:.4f}")
+         # Obtemos a classe predita para cada exemplo
+
+    predicted_classes = np.argmax(output, axis=1)
+
+    # Calculamos a acurácia
+    accuracy = calculate_accuracy(y_train, predicted_classes)
+    print(f"Accuracy: {accuracy*100:.2f}%")
 
 
 
