@@ -153,6 +153,39 @@ def main():
     print(f"Train Accuracy: {accuracy*100:.2f}%")
 
 
+        # validation pass
+    dense1_output = dense1.forward(X_val_normalized)
+    activation1_output = activation1.forward(dense1_output)
+    dense2_output = dense2.forward(activation1_output)
+    activation2_output = activation2.forward(dense2_output)
+    dense3_output = dense3.forward(activation2_output)
+    activation3_output = activation3.forward(dense3_output)
+    dense4_output = dense4.forward(activation3_output)
+    output = activation4.forward(dense4_output)
+
+    loss = softmax_loss.forward(output, y_val)
+
+    predicted_classes = np.argmax(output, axis=1)
+    accuracy = calculate_accuracy(y_val, predicted_classes)
+    print(f"Validation Accuracy: {accuracy*100:.2f}%")
+
+        # Test pass
+    dense1_output = dense1.forward(X_test_normalized)
+    activation1_output = activation1.forward(dense1_output)
+    dense2_output = dense2.forward(activation1_output)
+    activation2_output = activation2.forward(dense2_output)
+    dense3_output = dense3.forward(activation2_output)
+    activation3_output = activation3.forward(dense3_output)
+    dense4_output = dense4.forward(activation3_output)
+    output = activation4.forward(dense4_output)
+
+    loss = softmax_loss.forward(output, y_test)
+
+    predicted_classes = np.argmax(output, axis=1)
+    accuracy = calculate_accuracy(y_test, predicted_classes)
+    print(f"Test Accuracy: {accuracy*100:.2f}%")
+
+
 if __name__ == "__main__":
     main()
 
