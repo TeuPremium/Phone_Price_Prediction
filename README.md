@@ -2,7 +2,7 @@
 
 
 
-### This project is using this problem found on [kaggle](https://www.kaggle.com/datasets/iabhishekofficial/mobile-price-classification).
+### This project is using [this problem found on kaggle](https://www.kaggle.com/datasets/iabhishekofficial/mobile-price-classification).
 
 
 ## About Dataset
