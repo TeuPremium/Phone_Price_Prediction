@@ -18,9 +18,10 @@ Soon more Images of the application will be added.
     
 ![image](https://github.com/TeuPremium/Phone_Price_Prediction/assets/50275359/3435effe-c729-4475-848b-c1981feaca4e)
 
-this project was developed largely based on the nnfs book and online course available on youtube
+This project was developed largely based on the nnfs book and online course available on youtube.
 
 kaggle link:
 https://www.kaggle.com/datasets/iabhishekofficial/mobile-price-classification
+
 Book:
 [nnfs.io](https://nnfs.io/)
