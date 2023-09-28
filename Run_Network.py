@@ -88,20 +88,20 @@ def main():
         # print(np.shape(X_test_normalized))
         # print(type(X_train_normalized))
 
-       # Initializing the network
+       # Initializing the network and defining stricture:
     n_inputs = len(X_train_normalized[0])
     n_outputs = 4  # 4 -> output classes based on the provided dataset
-    dense1 = Layer_Dense(n_inputs, 24)  # using a 64 neuron starting layer
+    dense1 = Layer_Dense(n_inputs, 64)  # using a 64 neuron starting layer
     activation1 = activation_ReLU()
-    dense2 = Layer_Dense(24, n_outputs)  # Output layer
+    dense2 = Layer_Dense(64, n_outputs)  # Output layer
     activation2 = activation_softmax()
 
 
     softmax_loss = Activation_Softmax_Loss_CategoricalCrossentropy()
-    optimizer = Optimizer_SGD(learning_rate=0.05)  # Adjust the learning rate as needed
+    optimizer = Optimizer_SGD(learning_rate=0.1)  # Adjust the learning rate as needed
 
     # setting hyperparameters
-    num_epochs = 50000
+    num_epochs = 5000
 
     # Training loop
     for epoch in range(num_epochs):
