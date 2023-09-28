@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from Neural_Network import Layer_Dense, activation_ReLU, Activation_Softmax_Loss_CategoricalCrossentropy, Optimizer_SGD, activation_softmax
-
+import matplotlib.pyplot as plt
 
 class import_datasets:
     def __init__(self):
@@ -103,11 +103,12 @@ def main():
 
 
     softmax_loss = Activation_Softmax_Loss_CategoricalCrossentropy()
-    optimizer = Optimizer_SGD(learning_rate=1)  # Adjust the learning rate as needed
+    optimizer = Optimizer_SGD(learning_rate=0.1)  # Adjust the learning rate as needed
 
     # setting hyperparameters
     num_epochs = 1000
-
+    rms_errors = [] 
+    
     for epoch in range(num_epochs):
         # Forward pass
         dense1_output = dense1.forward(X_train_normalized)
@@ -141,9 +142,15 @@ def main():
         optimizer.update_params(dense3)
         optimizer.update_params(dense4)
 
+        # calculate RMS Error
+        squared_errors = (output - y_one_hot)**2
+        mean_squared_error = np.mean(squared_errors)
+        rms_error = np.sqrt(mean_squared_error)
+        rms_errors.append(rms_error)  # Adicionando à lista de erros RMS
+
         # Imprimir o progresso do treinamento
         if (epoch + 1) % 100 == 0:
-            print(f"Epoch {epoch+1}/{num_epochs}, Loss: {loss:.4f}")
+            print(f"Epoch {epoch+1}/{num_epochs}, Loss: {loss:.4f}, RMS Error: {rms_error:.4f}")
 
      # Obtemos a classe predita para cada exemplo
     predicted_classes = np.argmax(output, axis=1)
@@ -181,11 +188,25 @@ def main():
 
     loss = softmax_loss.forward(output, y_test)
 
+        # Calculating accuracy 
     predicted_classes = np.argmax(output, axis=1)
     accuracy = calculate_accuracy(y_test, predicted_classes)
     print(f"Test Accuracy: {accuracy*100:.2f}%")
 
 
+    # Plotando o erro RMS para cada época
+    plt.figure(figsize=(5, 5))
+    plt.plot(range(epoch+1), rms_errors, label='Erro RMS por Época', color='blue')
+    plt.xlabel('Época')
+    plt.ylabel('Erro RMS')
+    plt.title(f'Erro RMS até Época {epoch+1}')
+    plt.legend()
+    plt.show()
+
+
+
+
 if __name__ == "__main__":
     main()
+
 

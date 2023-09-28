@@ -148,6 +148,37 @@ def main():
 
 
 
+    # plotting the data
+
+    # Create a mesh grid
+    x_min, x_max = X_train[:, 0].min() - 1, X_train[:, 0].max() + 1
+    y_min, y_max = X_train[:, 1].min() - 1, X_train[:, 1].max() + 1
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.1),
+                        np.arange(y_min, y_max, 0.1))
+
+    # Make predictions on the mesh grid
+    mesh_data = np.c_[xx.ravel(), yy.ravel()]
+    mesh_output = model.predict(mesh_data)
+    mesh_output = np.argmax(mesh_output, axis=1)
+    mesh_output = mesh_output.reshape(xx.shape)
+
+    # Plot the decision boundaries
+    plt.contourf(xx, yy, mesh_output, cmap=plt.cm.RdYlBu, alpha=0.8)
+
+    # Plot the training points
+    scatter = plt.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap='viridis',
+                edgecolor='k', s=20)
+    legend1 = plt.legend(*scatter.legend_elements(),
+                        loc="upper right", title="Classes")
+    plt.gca().add_artist(legend1)
+
+    plt.xlim(xx.min(), xx.max())
+    plt.ylim(yy.min(), yy.max())
+
+    plt.show()
+
+
+
 
 if __name__ == "__main__":
     main()

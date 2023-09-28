@@ -56,7 +56,6 @@ class loss_Categorical_Cross_Entropy(loss):
         #  in a single prediction would lead to infinite loss across the board
         y_pred_clipped = np.clip(y_pred, 1e-7, 1-1e-7)
 
-        # print(y_true.shape)
         if len(y_true.shape) == 1:
         # this will return a vector for each result
             correct_confidences = y_pred_clipped[range(samples), y_true]
@@ -137,7 +136,6 @@ class Activation_Softmax_Loss_CategoricalCrossentropy():
         # Forward pass
 
     def forward(self, inputs, y_true):
-        # print(inputs)
         # Output layer's activation function
         self.activation.forward(inputs)
         # Set the output
