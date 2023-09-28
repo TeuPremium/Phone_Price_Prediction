@@ -1,0 +1,57 @@
+Used setup:
+    --> 3 hidden layers with 32, 16 and 8 neurons respectively
+    --> 0.1 learning rate
+
+    dense1 = Layer_Dense(n_inputs, 32)  # usando uma camada inicial com 32 neurônios
+    activation1 = activation_ReLU()
+    dense2 = Layer_Dense(32, 16)  # primeira camada escondida com 16 neurônios e ReLU
+    activation2 = activation_ReLU()  # ativação ReLU para a primeira camada escondida
+    dense3 = Layer_Dense(16, 8)  # segunda camada escondida com 8 neurônios e ReLU
+    activation3 = activation_ReLU()  # ativação ReLU para a segunda camada escondida
+    dense4 = Layer_Dense(8, n_outputs)  # Camada de saída
+    activation4 = activation_softmax()
+
+
+   optimizer = Optimizer_SGD(learning_rate=0.1)  # Adjust the learning rate as needed
+
+    # setting hyperparameters
+    num_epochs = 3000
+
+Final results:
+
+Train Accuracy: 100.00%
+Validation Accuracy: 89.50%
+Test Accuracy: 94.00%
+
+Training epochs:
+
+Epoch 100/3000, Loss: 1.3858, RMS Error: 0.4328
+Epoch 200/3000, Loss: 1.3844, RMS Error: 0.4320
+Epoch 300/3000, Loss: 1.3511, RMS Error: 0.4139
+Epoch 400/3000, Loss: 1.0294, RMS Error: 0.2548
+Epoch 500/3000, Loss: 0.8512, RMS Error: 0.1401
+Epoch 600/3000, Loss: 0.8018, RMS Error: 0.0981
+Epoch 700/3000, Loss: 0.7816, RMS Error: 0.0749
+Epoch 800/3000, Loss: 0.7704, RMS Error: 0.0590
+Epoch 900/3000, Loss: 0.7634, RMS Error: 0.0470
+Epoch 1000/3000, Loss: 0.7587, RMS Error: 0.0378
+Epoch 1100/3000, Loss: 0.7554, RMS Error: 0.0305
+Epoch 1200/3000, Loss: 0.7530, RMS Error: 0.0249
+Epoch 1300/3000, Loss: 0.7512, RMS Error: 0.0206
+Epoch 1400/3000, Loss: 0.7499, RMS Error: 0.0172
+Epoch 1500/3000, Loss: 0.7489, RMS Error: 0.0145
+Epoch 1600/3000, Loss: 0.7481, RMS Error: 0.0125
+Epoch 1700/3000, Loss: 0.7475, RMS Error: 0.0108
+Epoch 1800/3000, Loss: 0.7470, RMS Error: 0.0094
+Epoch 1900/3000, Loss: 0.7466, RMS Error: 0.0083
+Epoch 2000/3000, Loss: 0.7463, RMS Error: 0.0074
+Epoch 2100/3000, Loss: 0.7460, RMS Error: 0.0066
+Epoch 2200/3000, Loss: 0.7458, RMS Error: 0.0060
+Epoch 2300/3000, Loss: 0.7456, RMS Error: 0.0054
+Epoch 2400/3000, Loss: 0.7454, RMS Error: 0.0050
+Epoch 2500/3000, Loss: 0.7453, RMS Error: 0.0046
+Epoch 2600/3000, Loss: 0.7451, RMS Error: 0.0042
+Epoch 2700/3000, Loss: 0.7450, RMS Error: 0.0039
+Epoch 2800/3000, Loss: 0.7449, RMS Error: 0.0036
+Epoch 2900/3000, Loss: 0.7448, RMS Error: 0.0034
+Epoch 3000/3000, Loss: 0.7448, RMS Error: 0.0032

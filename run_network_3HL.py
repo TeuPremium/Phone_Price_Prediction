@@ -107,7 +107,7 @@ def main():
     optimizer = Optimizer_SGD(learning_rate=0.1)  # Adjust the learning rate as needed
 
     # setting hyperparameters
-    num_epochs = 100
+    num_epochs = 3000
     rms_errors = [] 
     
     for epoch in range(num_epochs):
