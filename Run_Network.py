@@ -91,17 +91,20 @@ def main():
        # Initializing the network and defining stricture:
     n_inputs = len(X_train_normalized[0])
     n_outputs = 4  # 4 -> output classes based on the provided dataset
-    dense1 = Layer_Dense(n_inputs, 64)  # using a 64 neuron starting layer
+   
+    dense1 = Layer_Dense(n_inputs, 24)  # usando uma camada inicial com 24 neurônios
     activation1 = activation_ReLU()
-    dense2 = Layer_Dense(64, n_outputs)  # Output layer
-    activation2 = activation_softmax()
+    dense2 = Layer_Dense(24, 16)  # nova camada escondida com 16 neurônios e ReLU
+    activation2 = activation_ReLU()  # ativação ReLU para a nova camada escondida
+    dense3 = Layer_Dense(16, n_outputs)  # Camada de saída
+    activation3 = activation_softmax()
 
 
     softmax_loss = Activation_Softmax_Loss_CategoricalCrossentropy()
-    optimizer = Optimizer_SGD(learning_rate=0.1)  # Adjust the learning rate as needed
+    optimizer = Optimizer_SGD(learning_rate=0.05)  # Adjust the learning rate as needed
 
     # setting hyperparameters
-    num_epochs = 5000
+    num_epochs = 10000
 
     # Training loop
     for epoch in range(num_epochs):
@@ -109,32 +112,33 @@ def main():
         dense1_output = dense1.forward(X_train_normalized)
         activation1_output = activation1.forward(dense1_output)
         dense2_output = dense2.forward(activation1_output)
-        output = activation2.forward(dense2_output)
+        activation2_output = activation2.forward(dense2_output)
+        dense3_output = dense3.forward(activation2_output)
+        output = activation3.forward(dense3_output)
 
-        # Calculate loss
+        # Calcular a perda
         loss = softmax_loss.forward(output, y_train)
-        
-        
-        # Backward pass
 
+        # Backward pass
         y_one_hot = np.eye(n_outputs)[y_train]
 
         grad_loss = (output - y_one_hot) / len(y_train)
         softmax_loss.backward(grad_loss, y_train)
-        dense2.backward(grad_loss)
+        dense3.backward(grad_loss)
+        activation2.backward(dense3.dinputs)
+        dense2.backward(activation2.dinputs)
         activation1.backward(dense2.dinputs)
         dense1.backward(activation1.dinputs)
 
-        # Update weights and biases
+        # uodate weights & biases
         optimizer.update_params(dense1)
         optimizer.update_params(dense2)
+        optimizer.update_params(dense3)
 
         # Print training progress
         if (epoch + 1) % 100 == 0:
             print(f"Epoch {epoch+1}/{num_epochs}, Loss: {loss:.4f}")
 
-    
-        
 
 
 
