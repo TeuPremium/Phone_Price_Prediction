@@ -113,6 +113,7 @@ class activation_softmax:
         # softmax function keeping the vector dimensions
         probabilities = exp_values / np.sum(exp_values, axis=1, keepdims=True)
         self.output = probabilities
+        return self.output
 
     def backward(self, dvalues):
         # starts unitialized array

@@ -91,22 +91,25 @@ def main():
        # Initializing the network
     n_inputs = len(X_train_normalized[0])
     n_outputs = 4  # 4 -> output classes based on the provided dataset
-    dense1 = Layer_Dense(n_inputs, 10)  # using a 64 neuron starting layer
+    dense1 = Layer_Dense(n_inputs, 24)  # using a 64 neuron starting layer
     activation1 = activation_ReLU()
-    dense2 = Layer_Dense(10, n_outputs)  # Output layer
+    dense2 = Layer_Dense(24, n_outputs)  # Output layer
+    activation2 = activation_softmax()
+
 
     softmax_loss = Activation_Softmax_Loss_CategoricalCrossentropy()
-    optimizer = Optimizer_SGD(learning_rate=0.075)  # Adjust the learning rate as needed
+    optimizer = Optimizer_SGD(learning_rate=0.05)  # Adjust the learning rate as needed
 
     # setting hyperparameters
-    num_epochs = 10000
+    num_epochs = 50000
 
     # Training loop
     for epoch in range(num_epochs):
         # Forward pass
         dense1_output = dense1.forward(X_train_normalized)
         activation1_output = activation1.forward(dense1_output)
-        output = dense2.forward(activation1_output)
+        dense2_output = dense2.forward(activation1_output)
+        output = activation2.forward(dense2_output)
 
         # Calculate loss
         loss = softmax_loss.forward(output, y_train)
