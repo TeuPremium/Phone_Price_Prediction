@@ -66,6 +66,12 @@ def calculate_accuracy(y_true, y_pred):
     accuracy = correct_predictions / total_predictions
     return accuracy
 
+def confusion_matrix(y_true, y_pred, num_classes):
+    cm = np.zeros((num_classes, num_classes), dtype=int)
+    for true, pred in zip(y_true, y_pred):
+        cm[true][pred] += 1
+    return cm
+
 def main():
     val_size = 0.1
     test_size = 0.1
@@ -85,9 +91,6 @@ def main():
     X_val_normalized = normalize_features(X_val)
     X_test_normalized = normalize_features(X_test)
 
-        # print(X_train_normalized[0])
-        # print(np.shape(X_test_normalized))
-        # print(type(X_train_normalized))
 
        # Initializing the network and defining stricture:
     n_inputs = len(X_train_normalized[0])
@@ -107,8 +110,13 @@ def main():
     optimizer = Optimizer_SGD(learning_rate=0.1)  # Adjust the learning rate as needed
 
     # setting hyperparameters
-    num_epochs = 3000
+    num_epochs = 1500
     rms_errors = [] 
+
+
+    train_losses = []
+    test1_losses = []
+
     
     for epoch in range(num_epochs):
         # Forward pass
@@ -119,15 +127,15 @@ def main():
         dense3_output = dense3.forward(activation2_output)
         activation3_output = activation3.forward(dense3_output)
         dense4_output = dense4.forward(activation3_output)
-        output = activation4.forward(dense4_output)
+        train_output = activation4.forward(dense4_output)
 
         # Calcular a perda
-        loss = softmax_loss.forward(output, y_train)
+        loss = softmax_loss.forward(train_output, y_train)
 
         # Backward pass
         y_one_hot = np.eye(n_outputs)[y_train]
 
-        grad_loss = (output - y_one_hot) / len(y_train)
+        grad_loss = (train_output - y_one_hot) / len(y_train)
         softmax_loss.backward(grad_loss, y_train)
         dense4.backward(grad_loss)
         activation3.backward(dense4.dinputs)
@@ -144,7 +152,7 @@ def main():
         optimizer.update_params(dense4)
 
         # calculate RMS Error
-        squared_errors = (output - y_one_hot)**2
+        squared_errors = (train_output - y_one_hot)**2
         mean_squared_error = np.mean(squared_errors)
         rms_error = np.sqrt(mean_squared_error)
         rms_errors.append(rms_error)  # Adicionando à lista de erros RMS
@@ -153,29 +161,38 @@ def main():
         if (epoch + 1) % 100 == 0:
             print(f"Epoch {epoch+1}/{num_epochs}, Loss: {loss:.4f}, RMS Error: {rms_error:.4f}")
 
-     # Obtemos a classe predita para cada exemplo
-    predicted_classes = np.argmax(output, axis=1)
+            # test1 pass
+        dense1_output = dense1.forward(X_val_normalized)
+        activation1_output = activation1.forward(dense1_output)
+        dense2_output = dense2.forward(activation1_output)
+        activation2_output = activation2.forward(dense2_output)
+        dense3_output = dense3.forward(activation2_output)
+        activation3_output = activation3.forward(dense3_output)
+        dense4_output = dense4.forward(activation3_output)
+        test1_output = activation4.forward(dense4_output)
 
+        test1_loss = softmax_loss.forward(test1_output, y_val)
+
+
+        # Saves the losses to a list
+        test1_losses.append(test1_loss)
+        train_losses.append(loss)
+
+
+     
+
+     # Obtemos a classe predita para cada exemplo
+    train_predicted_classes = np.argmax(train_output, axis=1)
     # Calculamos a acurácia
-    accuracy = calculate_accuracy(y_train, predicted_classes)
+    accuracy = calculate_accuracy(y_train, train_predicted_classes)
     print(f"Train Accuracy: {accuracy*100:.2f}%")
 
 
-        # validation pass
-    dense1_output = dense1.forward(X_val_normalized)
-    activation1_output = activation1.forward(dense1_output)
-    dense2_output = dense2.forward(activation1_output)
-    activation2_output = activation2.forward(dense2_output)
-    dense3_output = dense3.forward(activation2_output)
-    activation3_output = activation3.forward(dense3_output)
-    dense4_output = dense4.forward(activation3_output)
-    output = activation4.forward(dense4_output)
 
-    loss = softmax_loss.forward(output, y_val)
 
-    predicted_classes = np.argmax(output, axis=1)
-    accuracy = calculate_accuracy(y_val, predicted_classes)
-    print(f"Validation Accuracy: {accuracy*100:.2f}%")
+    test1_predicted_classes = np.argmax(test1_output, axis=1)
+    accuracy = calculate_accuracy(y_val, test1_predicted_classes)
+    print(f"test1 Accuracy: {accuracy*100:.2f}%")
 
         # Test pass
     dense1_output = dense1.forward(X_test_normalized)
@@ -185,24 +202,43 @@ def main():
     dense3_output = dense3.forward(activation2_output)
     activation3_output = activation3.forward(dense3_output)
     dense4_output = dense4.forward(activation3_output)
-    output = activation4.forward(dense4_output)
+    test_output = activation4.forward(dense4_output)
 
-    loss = softmax_loss.forward(output, y_test)
+    test_loss = softmax_loss.forward(test_output, y_test)
+
 
         # Calculating accuracy 
-    predicted_classes = np.argmax(output, axis=1)
-    accuracy = calculate_accuracy(y_test, predicted_classes)
+    test_predicted_classes = np.argmax(test_output, axis=1)
+    accuracy = calculate_accuracy(y_test, test_predicted_classes)
     print(f"Test Accuracy: {accuracy*100:.2f}%")
 
+    confusion_mat_test1 = confusion_matrix(y_val, test1_predicted_classes, num_classes=4)
+    print("Confusion Matrix for test1:")
+    print(confusion_mat_test1)
 
-    # Plotando o erro RMS para cada época
+    confusion_mat_test = confusion_matrix(y_test, test_predicted_classes, num_classes=4)
+    print("\nConfusion Matrix for Test:")
+    print(confusion_mat_test)
+
+    # Plotting RMS error per epoch
     plt.figure(figsize=(5, 5))
-    plt.plot(range(epoch+1), rms_errors, label='Erro RMS por Época', color='blue')
-    plt.xlabel('Época')
-    plt.ylabel('Erro RMS')
-    plt.title(f'Erro RMS até Época {epoch+1}')
+    plt.plot(range(epoch+1), rms_errors, label='Train RMS per epoch', color='blue')
+    plt.xlabel('Epoch')
+    plt.ylabel('Train RMS Error')
+    plt.title(f'RMS Error per epoch {epoch+1}')
     plt.legend()
     plt.show()
+
+    # Plotting loss per epoch
+    plt.figure(figsize=(5, 5))
+    plt.plot(range(epoch+1), train_losses, label='test1 Loss por Época', color='orange')
+    plt.plot(range(epoch+1), train_losses, label='Train Loss por Época', color='blue')
+    plt.xlabel('Época')
+    plt.ylabel('Loss (-log)')
+    plt.title('Loss per Époch')
+    plt.legend()
+    plt.show()
+
 
     #  <--------------------------### PLOT THE GRAPHS ###---------------------------->
     if isinstance(X_train_normalized, pd.DataFrame):
@@ -217,7 +253,6 @@ def main():
                     "sc_h", "sc_w", "talk_time", "three_g", "touch_screen", "wifi"]
 
     plt.figure(figsize=(12, 60))
-
     for i, feature in enumerate(feature_names):
         plt.subplot(11, 2, i+1)
         if isinstance(X_train_normalized, pd.DataFrame):
@@ -229,6 +264,7 @@ def main():
 
     plt.tight_layout()
     plt.show()
+
 
     # Assuming X_train_normalized is a DataFrame or a 2D numpy array
     # If it's a DataFrame, select the "clock_speed" column for plotting

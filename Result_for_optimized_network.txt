@@ -12,7 +12,7 @@ Used setup:
     activation4 = activation_softmax()
 
 
-   optimizer = Optimizer_SGD(learning_rate=0.1)  # Adjust the learning rate as needed
+   optimizer = Optimizer_SGD(learning_rate=0.1)  
 
     # setting hyperparameters
     num_epochs = 3000
