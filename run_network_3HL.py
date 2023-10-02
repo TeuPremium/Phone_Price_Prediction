@@ -60,7 +60,6 @@ def normalize_features(X):
     return X_normalized
 
 def calculate_accuracy(y_true, y_pred):
-    # Assuming y_true and y_pred are numpy arrays
     correct_predictions = np.sum(y_true == y_pred)
     total_predictions = len(y_true)
     accuracy = correct_predictions / total_predictions
@@ -110,7 +109,7 @@ def main():
     optimizer = Optimizer_SGD(learning_rate=0.1)  # Adjust the learning rate as needed
 
     # setting hyperparameters
-    num_epochs = 2000
+    num_epochs = 100
     rms_errors = [] 
 
 
@@ -243,5 +242,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
