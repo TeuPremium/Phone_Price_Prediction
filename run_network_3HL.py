@@ -110,7 +110,7 @@ def main():
     optimizer = Optimizer_SGD(learning_rate=0.1)  # Adjust the learning rate as needed
 
     # setting hyperparameters
-    num_epochs = 1500
+    num_epochs = 2000
     rms_errors = [] 
 
 
@@ -231,95 +231,13 @@ def main():
 
     # Plotting loss per epoch
     plt.figure(figsize=(5, 5))
-    plt.plot(range(epoch+1), train_losses, label='test1 Loss por Época', color='orange')
+    plt.plot(range(epoch+1), test1_losses, label='test1 Loss por Época', color='orange')
     plt.plot(range(epoch+1), train_losses, label='Train Loss por Época', color='blue')
     plt.xlabel('Época')
     plt.ylabel('Loss (-log)')
     plt.title('Loss per Époch')
     plt.legend()
     plt.show()
-
-
-    #  <--------------------------### PLOT THE GRAPHS ###---------------------------->
-    if isinstance(X_train_normalized, pd.DataFrame):
-        X_train_features = X_train_normalized.iloc[:, :20]
-    else:
-        X_train_features = X_train_normalized[:, :20]
-
-    # Assuming y_train is a 1D numpy array
-    feature_names = ["battery_power", "blue", "clock_speed", "dual_sim", 
-                    "fc", "four_g", "int_memory", "m_dep", "mobile_wt", 
-                    "n_cores", "pc", "px_height", "px_width", "ram", 
-                    "sc_h", "sc_w", "talk_time", "three_g", "touch_screen", "wifi"]
-
-    plt.figure(figsize=(12, 60))
-    for i, feature in enumerate(feature_names):
-        plt.subplot(11, 2, i+1)
-        if isinstance(X_train_normalized, pd.DataFrame):
-            plt.boxplot(X_train_features[feature])
-        else:
-            plt.boxplot(X_train_features[:, i])
-        plt.xlabel(feature)
-        plt.title(f'{feature} Distribution')
-
-    plt.tight_layout()
-    plt.show()
-
-
-    # Assuming X_train_normalized is a DataFrame or a 2D numpy array
-    # If it's a DataFrame, select the "clock_speed" column for plotting
-    if isinstance(X_train_normalized, pd.DataFrame):
-        clock_speed_data = X_train_normalized["clock_speed"]
-    else:
-        clock_speed_data = X_train_normalized[:, 2]  # Assuming clock_speed is the third feature
-
-    # Create a DataFrame for easier plotting
-    data = pd.DataFrame({"clock_speed": clock_speed_data, "price_range": y_train})
-
-    # Create a boxplot for clock_speed by price_range
-    plt.figure(figsize=(8, 6))
-    sns.boxplot(x="price_range", y="clock_speed", data=data)
-    plt.xlabel('Price Range')
-    plt.ylabel('Clock Speed')
-    plt.title('Clock Speed Distribution by Price Range')
-    plt.show()
-
-        # Assuming X_train_normalized is a DataFrame or a 2D numpy array
-    # If it's a DataFrame, select the "fc" column for plotting
-    if isinstance(X_train_normalized, pd.DataFrame):
-        fc_data = X_train_normalized["fc"]
-    else:
-        fc_data = X_train_normalized[:, 4]  # Assuming fc is the fifth feature
-
-    # Create a DataFrame for easier plotting
-    data = pd.DataFrame({"Front Camera (fc)": fc_data, "Price Range": y_train})
-
-    # Create a boxplot for fc by price_range
-    plt.figure(figsize=(8, 6))
-    sns.boxplot(x="Price Range", y="Front Camera (fc)", data=data)
-    plt.xlabel('Price Range')
-    plt.ylabel('Front Camera (fc)')
-    plt.title('Front Camera (fc) Distribution by Price Range')
-    plt.show()
-
-    # Assuming X_train_normalized is a DataFrame or a 2D numpy array
-    # If it's a DataFrame, select the "four_g" column for plotting
-    if isinstance(X_train_normalized, pd.DataFrame):
-        four_g_data = X_train_normalized["four_g"]
-    else:
-        four_g_data = X_train_normalized[:, 5]  # Assuming four_g is the sixth feature
-
-    # Create a DataFrame for easier plotting
-    data = pd.DataFrame({"Four G (four_g)": four_g_data, "Price Range": y_train})
-
-    # Create a boxplot for four_g by price_range
-    plt.figure(figsize=(8, 6))
-    sns.boxplot(x="Price Range", y="Four G (four_g)", data=data)
-    plt.xlabel('Price Range')
-    plt.ylabel('Four G (four_g)')
-    plt.title('Four G (four_g) Distribution by Price Range')
-    plt.show()
-
 
 
 
