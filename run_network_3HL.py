@@ -20,11 +20,11 @@ class import_datasets:
         # self.load_test_data = dataset
         return dataset
 
-    def custom_train_val_test_split(self, X, y, val_size, test_size, random_state):
+    def custom_train_val_test_split(self, X, y, test1_size, test_size, random_state):
         np.random.seed(random_state)
         shuffled_indices = np.random.permutation(len(X))
         
-        val_set_size = int(len(X) * val_size)
+        val_set_size = int(len(X) * test1_size)
         test_set_size = int(len(X) * test_size)
         
         val_indices = shuffled_indices[:val_set_size]
@@ -72,7 +72,7 @@ def confusion_matrix(y_true, y_pred, num_classes):
     return cm
 
 def main():
-    val_size = 0.1
+    test1_size = 0.1
     test_size = 0.1
     random_state = 133
 
@@ -82,7 +82,7 @@ def main():
     X = train_data.drop('price_range', axis=1)
     y = train_data['price_range']
 
-    X_train, X_val, X_test, y_train, y_val, y_test = p.custom_train_val_test_split(X, y, val_size, test_size, random_state)
+    X_train, X_val, X_test, y_train, y_val, y_test = p.custom_train_val_test_split(X, y, test1_size, test_size, random_state)
 
     X_train, X_val, X_test, y_train, y_val, y_test =  np.array(X_train), np.array(X_val), np.array(X_test), np.array(y_train), np.array(y_val), np.array(y_test)
 
@@ -95,21 +95,23 @@ def main():
     n_inputs = len(X_train_normalized[0])
     n_outputs = 4  # 4 -> output classes based on the provided dataset
    
-    dense1 = Layer_Dense(n_inputs, 32)  # usando uma camada inicial com 32 neurônios
+    dense1 = Layer_Dense(n_inputs, 32)  # Inicial Layer with 32 Neurons
+    # ReLU actovation function for all layers except output
     activation1 = activation_ReLU()
-    dense2 = Layer_Dense(32, 16)  # primeira camada escondida com 16 neurônios e ReLU
-    activation2 = activation_ReLU()  # ativação ReLU para a primeira camada escondida
-    dense3 = Layer_Dense(16, 8)  # segunda camada escondida com 8 neurônios e ReLU
-    activation3 = activation_ReLU()  # ativação ReLU para a segunda camada escondida
-    dense4 = Layer_Dense(8, n_outputs)  # Camada de saída
-    activation4 = activation_softmax()
+    dense2 = Layer_Dense(32, 16)  # Hidden layer with 16 neurons
+    activation2 = activation_ReLU()
+    dense3 = Layer_Dense(16, 8)  # Hidden layer with 8 neurons
+    activation3 = activation_ReLU()
+    dense4 = Layer_Dense(8, n_outputs)  # Output layer with N outputs to match the categories
+                                        # In this case, N is 4
+    activation4 = activation_softmax()  # Softmax activation for output layer  
 
 
     softmax_loss = Activation_Softmax_Loss_CategoricalCrossentropy()
     optimizer = Optimizer_SGD(learning_rate=0.1)  # Adjust the learning rate as needed
 
     # setting hyperparameters
-    num_epochs = 100
+    num_epochs = 5000
     rms_errors = [] 
 
 
@@ -128,7 +130,7 @@ def main():
         dense4_output = dense4.forward(activation3_output)
         train_output = activation4.forward(dense4_output)
 
-        # Calcular a perda
+        # Calculates Loss
         loss = softmax_loss.forward(train_output, y_train)
 
         # Backward pass
@@ -144,7 +146,7 @@ def main():
         activation1.backward(dense2.dinputs)
         dense1.backward(activation1.dinputs)
 
-        # Atualizar pesos e biases
+        # Update weights & biases
         optimizer.update_params(dense1)
         optimizer.update_params(dense2)
         optimizer.update_params(dense3)
@@ -230,11 +232,11 @@ def main():
 
     # Plotting loss per epoch
     plt.figure(figsize=(5, 5))
-    plt.plot(range(epoch+1), test1_losses, label='test1 Loss por Época', color='orange')
-    plt.plot(range(epoch+1), train_losses, label='Train Loss por Época', color='blue')
-    plt.xlabel('Época')
+    plt.plot(range(epoch+1), test1_losses, label='test1 Loss per Epoch', color='orange')
+    plt.plot(range(epoch+1), train_losses, label='Train Loss per Epoch', color='blue')
+    plt.xlabel('Epoch')
     plt.ylabel('Loss (-log)')
-    plt.title('Loss per Époch')
+    plt.title('Loss per Epoch')
     plt.legend()
     plt.show()
 
