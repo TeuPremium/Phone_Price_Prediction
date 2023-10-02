@@ -4,6 +4,7 @@
 
 ### This project is using [this problem found on kaggle](https://www.kaggle.com/datasets/iabhishekofficial/mobile-price-classification).
 
+## Check out the presentations in PDF and PPTX!
 
 ## About Dataset
 ### Context
