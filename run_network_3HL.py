@@ -2,7 +2,6 @@ import pandas as pd
 import numpy as np
 from Neural_Network import Layer_Dense, activation_ReLU, Activation_Softmax_Loss_CategoricalCrossentropy, Optimizer_SGD, activation_softmax
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 class import_datasets:
     def __init__(self):
