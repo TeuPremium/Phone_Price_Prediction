@@ -6,6 +6,7 @@
 
 ## Check out the presentations in [PDF](https://github.com/TeuPremium/Phone_Price_Prediction/blob/main/Presentation.pdf) or [PPTX](https://github.com/TeuPremium/Phone_Price_Prediction/blob/main/Projec%20Presentation.pptx)!
 
+
 ## About Dataset
 ### Context
 Bob has started his own mobile company. He wants to give tough fight to big companies like Apple,Samsung etc.
@@ -26,12 +27,12 @@ But this neural network could also do the prediction for the test dataset.
     Validation Accuracy: 89.50%
     Test Accuracy: 94.00%
 
-Soon more Images of the application will be added.
+To see more Images of the results obtained by the network, check out the [presentation](https://github.com/TeuPremium/Phone_Price_Prediction/blob/main/Presentation.pdf).
 ## training dataset rms error per epoch
     
 ![image](https://github.com/TeuPremium/Phone_Price_Prediction/assets/50275359/3435effe-c729-4475-848b-c1981feaca4e)
 
-This project was developed largely based on the nnfs book and online course available on youtube.
+This project was developed using the nnfs book and online course available on youtube as a source for the network construction.
 
 kaggle link:
 https://www.kaggle.com/datasets/iabhishekofficial/mobile-price-classification
