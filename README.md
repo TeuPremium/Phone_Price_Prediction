@@ -4,7 +4,7 @@
 
 ### This project is using [this problem found on kaggle](https://www.kaggle.com/datasets/iabhishekofficial/mobile-price-classification).
 
-## Check out the presentations in PDF and PPTX!
+## Check out the presentations in [PDF](https://github.com/TeuPremium/Phone_Price_Prediction/blob/main/Presentation.pdf) or [PPTX](https://github.com/TeuPremium/Phone_Price_Prediction/blob/main/Projec%20Presentation.pptx)!
 
 ## About Dataset
 ### Context
