@@ -2,6 +2,7 @@
 
 ## Project Overview
 
+To test and run this project, it is necessary to execute the run_network_3HL.py archive.
 Check out the presentations in [PDF](https://github.com/TeuPremium/Phone_Price_Prediction/blob/main/Presentation.pdf) or [PPTX](https://github.com/TeuPremium/Phone_Price_Prediction/blob/main/Projec%20Presentation.pptx)!
 
 ### Dataset Source
